@@ -72,17 +72,25 @@ public class UserController {
     }
 
     @PutMapping("/follow")
-    public ResponseEntity<Object> follow(@RequestBody FollowRequest request){
-        boolean result = userService.follow(request.getUserId(), request.getEmployeeId());
-        if(result) return ResponseEntity.ok().build();
-        return ResponseEntity.badRequest().build();
+    public ResponseEntity<String> follow(@RequestBody FollowRequest request){
+        try {
+            boolean result = userService.follow(request.getUserId(), request.getEmployeeId());
+            if (result) return ResponseEntity.ok().body(request.getUserId()+" has followed "+ request.getEmployeeId());;
+            return ResponseEntity.badRequest().body("user or employee is dead");
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/unfollow")
-    public ResponseEntity<Object> unFollow(@RequestBody FollowRequest request){
-        boolean result = userService.unFollow(request.getUserId(), request.getEmployeeId());
-        if(result) return ResponseEntity.ok().build();
-        return ResponseEntity.badRequest().build();
+    public ResponseEntity<String> unFollow(@RequestBody FollowRequest request){
+        try {
+            boolean result = userService.unFollow(request.getUserId(), request.getEmployeeId());
+            if (result) return ResponseEntity.ok().body(request.getUserId()+" has unfollowed "+ request.getEmployeeId());
+            return ResponseEntity.badRequest().body("user or employee is dead");
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 }

@@ -65,26 +65,22 @@ public class UserService {
         User user = userRepository.findById(userId).orElse(null);
         Employee emp = employeeRepository.findById(employeeId).orElse(null);
         if(user==null||emp==null) return false;
-        ArrayList<Employee> list = new ArrayList<>(user.getFollowedEmployees());
-        if(list.contains(emp)) {
-            list.remove(emp);
-            user.setFollowedEmployees(list);
-            userRepository.save(user);
-            return true;
-        }return false;
+        Set<Employee> list = new HashSet<>(user.getFollowedEmployees());
+        list.remove(emp);
+        user.setFollowedEmployees(new ArrayList<>(list));
+        userRepository.save(user);
+        return true;
     }
 
     public boolean follow(int userId, int employeeId){
         User user = userRepository.findById(userId).orElse(null);
         Employee emp = employeeRepository.findById(employeeId).orElse(null);
         if(user==null||emp==null) return false;
-        ArrayList<Employee> list = new ArrayList<>(user.getFollowedEmployees());
-        if(!list.contains(emp)) {
-            list.add(emp);
-            user.setFollowedEmployees(list);
-            userRepository.save(user);
-            return true;
-        }return false;
+        Set<Employee> list = new HashSet<>(user.getFollowedEmployees());
+        list.add(emp);
+        user.setFollowedEmployees(new ArrayList<>(list));
+        userRepository.save(user);
+        return true;
     }
 
 }
