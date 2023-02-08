@@ -67,7 +67,7 @@ public class AuthController {
        } catch (ProfanityException pe){
            return  ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
        } catch (Exception e){
-           return ResponseEntity.badRequest().build();
+           return ResponseEntity.badRequest().body(new UserResponse(-1,e.getMessage(),registerRequest.toString(),"","",null));
        }
     }
 
