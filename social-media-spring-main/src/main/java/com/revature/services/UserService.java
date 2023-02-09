@@ -65,10 +65,14 @@ public class UserService {
         User user = userRepository.findById(userId).orElse(null);
         Employee emp = employeeRepository.findById(employeeId).orElse(null);
         if(user==null||emp==null) return false;
-        Set<Employee> list = new HashSet<>(user.getFollowedEmployees());
-        list.remove(emp);
-        user.setFollowedEmployees(new ArrayList<>(list));
+        Set<Employee> listOfEmp = new HashSet<>(user.getFollowedEmployees());
+        Set<User> listOfUser= new HashSet<>(emp.getFollowers());
+        listOfEmp.remove(emp);
+        listOfUser.remove(user);
+        user.setFollowedEmployees(new ArrayList<>(listOfEmp));
+        emp.setFollowers(new ArrayList<>(listOfUser));
         userRepository.save(user);
+        employeeRepository.save(emp);
         return true;
     }
 
@@ -76,10 +80,14 @@ public class UserService {
         User user = userRepository.findById(userId).orElse(null);
         Employee emp = employeeRepository.findById(employeeId).orElse(null);
         if(user==null||emp==null) return false;
-        Set<Employee> list = new HashSet<>(user.getFollowedEmployees());
-        list.add(emp);
-        user.setFollowedEmployees(new ArrayList<>(list));
+        Set<Employee> listOfEmp = new HashSet<>(user.getFollowedEmployees());
+        Set<User> listOfUser= new HashSet<>(emp.getFollowers());
+        listOfEmp.add(emp);
+        listOfUser.add(user);
+        user.setFollowedEmployees(new ArrayList<>(listOfEmp));
+        emp.setFollowers(new ArrayList<>(listOfUser));
         userRepository.save(user);
+        employeeRepository.save(emp);
         return true;
     }
 
