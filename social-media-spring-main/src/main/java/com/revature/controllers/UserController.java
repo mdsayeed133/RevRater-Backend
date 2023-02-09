@@ -74,9 +74,8 @@ public class UserController {
     @PutMapping("/follow")
     public ResponseEntity<String> follow(@RequestBody FollowRequest request){
         try {
-            boolean result = userService.follow(request.getUserId(), request.getEmployeeId());
-            if (result) return ResponseEntity.ok().body(request.getUserId()+" has followed "+ request.getEmployeeId());;
-            return ResponseEntity.badRequest().body("user or employee is dead");
+            String result = userService.follow(request.getUserId(), request.getEmployeeId());
+            return ResponseEntity.ok().body(result);
         } catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
@@ -85,11 +84,20 @@ public class UserController {
     @PutMapping("/unfollow")
     public ResponseEntity<String> unFollow(@RequestBody FollowRequest request){
         try {
-            boolean result = userService.unFollow(request.getUserId(), request.getEmployeeId());
-            if (result) return ResponseEntity.ok().body(request.getUserId()+" has unfollowed "+ request.getEmployeeId());
-            return ResponseEntity.badRequest().body("user or employee is dead");
+            String result = userService.unFollow(request.getUserId(), request.getEmployeeId());
+            return ResponseEntity.ok().body(result);
         } catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/isFollowing")
+    public ResponseEntity<Boolean> isFollowing(@RequestBody FollowRequest request){
+        try{
+            boolean result= userService.isFollowing(request.getUserId(), request.getEmployeeId());
+            return ResponseEntity.ok().body(result);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(false);
         }
     }
 

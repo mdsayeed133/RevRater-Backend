@@ -107,8 +107,8 @@ class UserServiceTest {
         when(userRepository.save(mockUser)).thenReturn(mockUser);
         when(employeeRepository.save(newEmployee)).thenReturn(newEmployee);
 
-        boolean result = userService.follow(mockUser.getId(), newEmployee.getId());
-        assertTrue(result);
+        String result = userService.follow(mockUser.getId(), newEmployee.getId());
+        assertThat(result, equalTo(mockUser.getFirstName()+" is now following "+newEmployee.getFirstName()));
     }
 
     @Test
@@ -117,8 +117,8 @@ class UserServiceTest {
         when(employeeRepository.findById(mockEmployee.getId())).thenReturn(Optional.of(mockEmployee));
         when(userRepository.save(mockUser)).thenReturn(mockUser);
         when(employeeRepository.save(mockEmployee)).thenReturn(mockEmployee);
-        boolean result = userService.unFollow(mockUser.getId(), mockEmployee.getId());
-        assertTrue(result);
+        String result = userService.unFollow(mockUser.getId(), mockEmployee.getId());
+        assertThat(result, equalTo(mockUser.getFirstName()+" has unfollowed "+mockEmployee.getFirstName()));
     }
 
 }
