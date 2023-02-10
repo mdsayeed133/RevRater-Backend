@@ -121,4 +121,12 @@ class UserServiceTest {
         assertThat(result, equalTo(mockUser.getFirstName()+" has unfollowed "+mockEmployee.getFirstName()));
     }
 
+    @Test
+    void isFollowingTest(){
+        when(userRepository.findById(mockUser.getId())).thenReturn(Optional.of(mockUser));
+        when(employeeRepository.findById(mockEmployee.getId())).thenReturn(Optional.of(mockEmployee));
+        boolean result = userService.isFollowing(mockUser.getId(),mockEmployee.getId());
+        assertThat(result, equalTo(false));
+    }
+
 }
