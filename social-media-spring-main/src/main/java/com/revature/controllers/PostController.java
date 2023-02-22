@@ -209,15 +209,6 @@ public class PostController {
         }
     }
 
-    @DeleteMapping("/{id}/post/delete")
-    public ResponseEntity<Object> deletePost(@PathVariable int id){
-        try{
-            postService.deletePost(id);
-            return ResponseEntity.ok().build();
-        } catch (Exception e){
-            return ResponseEntity.badRequest().build();
-        }
-    }
 
     private PostResponse createPostResponse(Post post) {
         User user = post.getAuthor();

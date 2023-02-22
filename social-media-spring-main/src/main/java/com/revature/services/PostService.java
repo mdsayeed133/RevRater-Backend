@@ -194,14 +194,6 @@ public class PostService {
 			return false;
 		}
 	}
-	public void deletePost(int postId) throws PostNotFound{
-		Post post = postRepository.findById(postId).orElse(null);
-		if(post==null) throw new PostNotFound();
-		if (post.getPostType().equals(PostType.Rating)) {
-			Rating rating = post.getRating();
-			ratingService.delete(rating);
-		}
-		postRepository.delete(post);
-	}
+
 
 }
