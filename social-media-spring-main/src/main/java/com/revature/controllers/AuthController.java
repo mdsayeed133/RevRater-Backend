@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000"}, allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:4200", "http://localhost:3000","http://revrater.app.s3-website.us-east-2.amazonaws.com"}, allowCredentials = "true")
 public class AuthController {
 
     private AuthService authService;
@@ -29,13 +29,8 @@ public class AuthController {
     //Login works
     @PostMapping("/login")
     public ResponseEntity<UserResponse> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
-        Optional<User> optional = authService.findByCredentials(loginRequest.getEmail(), loginRequest.getPassword());
-        User user = optional.get();
-
-        if(user == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
+        User user = authService.findByCredentials(loginRequest.getEmail(), loginRequest.getPassword()).get();
+        if(user == null) return ResponseEntity.badRequest().build();
         UserResponse uDTO = new UserResponse(user.getId(), user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName(), user.getCreatedDate());
         session.setAttribute("user", user);
 
@@ -67,7 +62,7 @@ public class AuthController {
        } catch (ProfanityException pe){
            return  ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
        } catch (Exception e){
-           return ResponseEntity.badRequest().build();
+           return ResponseEntity.badRequest().body(new UserResponse(-1,e.getMessage(),registerRequest.toString(),"","",null));
        }
     }
 

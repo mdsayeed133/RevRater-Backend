@@ -42,8 +42,8 @@ class UserServiceTest {
     public void setup(){
         mockDepartment= new Department(1,"trainer");
         mockUser = new User(0, "test@example.com", "password", "John", "Doe", Instant.now());
-        mockEmployee = new Employee(1,"Ben","Ten",mockUser,mockDepartment,Instant.now());
-        mockEmployee2= new Employee(2, "Ben2","2",mockUser,mockDepartment,Instant.now());
+        mockEmployee = new Employee(1,"Ben","Ten",mockUser,mockDepartment,new ArrayList<>(),Instant.now());
+        mockEmployee2= new Employee(2, "Ben2","2",mockUser,mockDepartment,new ArrayList<>(),Instant.now());
         ArrayList<Employee> followedEmployees = new ArrayList<Employee>();
         followedEmployees.add(mockEmployee);
         followedEmployees.add(mockEmployee2);
@@ -101,13 +101,14 @@ class UserServiceTest {
     }
     @Test
     void followEmployeeTest() {
-        Employee newEmployee = new Employee(3,"Ben3","Bee",mockUser,mockDepartment,Instant.now());
+        Employee newEmployee = new Employee(3,"Ben3","Bee",mockUser,mockDepartment,new ArrayList<>(),Instant.now());
         when(userRepository.findById(mockUser.getId())).thenReturn(Optional.of(mockUser));
         when(employeeRepository.findById(newEmployee.getId())).thenReturn(Optional.of(newEmployee));
         when(userRepository.save(mockUser)).thenReturn(mockUser);
+        when(employeeRepository.save(newEmployee)).thenReturn(newEmployee);
 
-        boolean result = userService.follow(mockUser.getId(), newEmployee.getId());
-        assertTrue(result);
+        String result = userService.follow(mockUser.getId(), newEmployee.getId());
+        assertThat(result, equalTo(mockUser.getFirstName()+" is now following "+newEmployee.getFirstName()));
     }
 
     @Test
@@ -115,8 +116,17 @@ class UserServiceTest {
         when(userRepository.findById(mockUser.getId())).thenReturn(Optional.of(mockUser));
         when(employeeRepository.findById(mockEmployee.getId())).thenReturn(Optional.of(mockEmployee));
         when(userRepository.save(mockUser)).thenReturn(mockUser);
-        boolean result = userService.unFollow(mockUser.getId(), mockEmployee.getId());
-        assertTrue(result);
+        when(employeeRepository.save(mockEmployee)).thenReturn(mockEmployee);
+        String result = userService.unFollow(mockUser.getId(), mockEmployee.getId());
+        assertThat(result, equalTo(mockUser.getFirstName()+" has unfollowed "+mockEmployee.getFirstName()));
+    }
+
+    @Test
+    void isFollowingTest(){
+        when(userRepository.findById(mockUser.getId())).thenReturn(Optional.of(mockUser));
+        when(employeeRepository.findById(mockEmployee.getId())).thenReturn(Optional.of(mockEmployee));
+        boolean result = userService.isFollowing(mockUser.getId(),mockEmployee.getId());
+        assertThat(result, equalTo(false));
     }
 
 }

@@ -209,15 +209,6 @@ public class PostController {
         }
     }
 
-    @DeleteMapping("/{id}/post/delete")
-    public ResponseEntity<Object> deletePost(@PathVariable int id){
-        try{
-            postService.deletePost(id);
-            return ResponseEntity.ok().build();
-        } catch (Exception e){
-            return ResponseEntity.badRequest().build();
-        }
-    }
 
     private PostResponse createPostResponse(Post post) {
         User user = post.getAuthor();
@@ -227,7 +218,7 @@ public class PostController {
             Rating rating = post.getRating();
             Employee employee = rating.getEmployee();
             EmployeeResponse employeeResponse = new EmployeeResponse(employee.getId(), employee.getFirstName(), employee.getLastName(), userResponse, employee.getDepartment(), employee.getCreatedDate());
-            ratingResponse = new RatingResponse(rating.getId(), employeeResponse, rating.getId(), rating.getTag1(), rating.getTag2(), rating.getTag3());
+            ratingResponse = new RatingResponse(rating.getId(), employeeResponse, rating.getScore(), rating.getTag1(), rating.getTag2(), rating.getTag3());
         }
         return new PostResponse(post.getId(), post.getMessage(), post.getImageId(), userResponse, post.getPostType(), ratingResponse, post.getCreatedDate());
     }

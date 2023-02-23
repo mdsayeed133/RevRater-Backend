@@ -61,30 +61,42 @@ public class UserService {
     }
 
 
-    public boolean unFollow(int userId, int employeeId){
+    public String unFollow(int userId, int employeeId){
         User user = userRepository.findById(userId).orElse(null);
         Employee emp = employeeRepository.findById(employeeId).orElse(null);
-        if(user==null||emp==null) return false;
-        ArrayList<Employee> list = new ArrayList<>(user.getFollowedEmployees());
-        if(list.contains(emp)) {
-            list.remove(emp);
-            user.setFollowedEmployees(list);
-            userRepository.save(user);
-            return true;
-        }return false;
+        if(user==null||emp==null) return "Can't find the emp#"+employeeId;
+        Set<Employee> listOfEmp = new HashSet<>(user.getFollowedEmployees());
+        Set<User> listOfUser= new HashSet<>(emp.getFollowers());
+        listOfEmp.remove(emp);
+        listOfUser.remove(user);
+        user.setFollowedEmployees(new ArrayList<>(listOfEmp));
+        emp.setFollowers(new ArrayList<>(listOfUser));
+        userRepository.save(user);
+        employeeRepository.save(emp);
+        return user.getFirstName()+" has unfollowed "+emp.getFirstName();
     }
 
-    public boolean follow(int userId, int employeeId){
+    public String follow(int userId, int employeeId){
+        User user = userRepository.findById(userId).orElse(null);
+        Employee emp = employeeRepository.findById(employeeId).orElse(null);
+        if(user==null||emp==null) return "Can't find the emp#"+employeeId;
+        Set<Employee> listOfEmp = new HashSet<>(user.getFollowedEmployees());
+        Set<User> listOfUser= new HashSet<>(emp.getFollowers());
+        listOfEmp.add(emp);
+        listOfUser.add(user);
+        user.setFollowedEmployees(new ArrayList<>(listOfEmp));
+        emp.setFollowers(new ArrayList<>(listOfUser));
+        userRepository.save(user);
+        employeeRepository.save(emp);
+        return user.getFirstName()+" is now following "+emp.getFirstName();
+    }
+
+    public boolean isFollowing(int userId, int employeeId){
         User user = userRepository.findById(userId).orElse(null);
         Employee emp = employeeRepository.findById(employeeId).orElse(null);
         if(user==null||emp==null) return false;
-        ArrayList<Employee> list = new ArrayList<>(user.getFollowedEmployees());
-        if(!list.contains(emp)) {
-            list.add(emp);
-            user.setFollowedEmployees(list);
-            userRepository.save(user);
-            return true;
-        }return false;
+        ArrayList<User> listOfUser = new ArrayList<>(emp.getFollowers());
+        return listOfUser.contains(user);
     }
 
 }

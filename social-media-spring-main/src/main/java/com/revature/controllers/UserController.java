@@ -72,17 +72,33 @@ public class UserController {
     }
 
     @PutMapping("/follow")
-    public ResponseEntity<Object> follow(@RequestBody FollowRequest request){
-        boolean result = userService.follow(request.getUserId(), request.getEmployeeId());
-        if(result) return ResponseEntity.ok().build();
-        return ResponseEntity.badRequest().build();
+    public ResponseEntity<String> follow(@RequestBody FollowRequest request){
+        try {
+            String result = userService.follow(request.getUserId(), request.getEmployeeId());
+            return ResponseEntity.ok().body(result);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PutMapping("/unfollow")
-    public ResponseEntity<Object> unFollow(@RequestBody FollowRequest request){
-        boolean result = userService.unFollow(request.getUserId(), request.getEmployeeId());
-        if(result) return ResponseEntity.ok().build();
-        return ResponseEntity.badRequest().build();
+    public ResponseEntity<String> unFollow(@RequestBody FollowRequest request){
+        try {
+            String result = userService.unFollow(request.getUserId(), request.getEmployeeId());
+            return ResponseEntity.ok().body(result);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/isFollowing")
+    public ResponseEntity<Boolean> isFollowing(@RequestBody FollowRequest request){
+        try{
+            boolean result= userService.isFollowing(request.getUserId(), request.getEmployeeId());
+            return ResponseEntity.ok().body(result);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(false);
+        }
     }
 
 }
