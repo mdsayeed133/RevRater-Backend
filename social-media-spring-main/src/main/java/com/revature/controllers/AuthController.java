@@ -29,13 +29,8 @@ public class AuthController {
     //Login works
     @PostMapping("/login")
     public ResponseEntity<UserResponse> login(@RequestBody LoginRequest loginRequest, HttpSession session) {
-        Optional<User> optional = authService.findByCredentials(loginRequest.getEmail(), loginRequest.getPassword());
-        User user = optional.get();
-
-        if(user == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
+        User user = authService.findByCredentials(loginRequest.getEmail(), loginRequest.getPassword()).get();
+        if(user == null) return ResponseEntity.badRequest().build();
         UserResponse uDTO = new UserResponse(user.getId(), user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName(), user.getCreatedDate());
         session.setAttribute("user", user);
 

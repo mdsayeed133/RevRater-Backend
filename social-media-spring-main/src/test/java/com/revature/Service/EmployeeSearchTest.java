@@ -30,7 +30,6 @@ public class EmployeeSearchTest {
 
     private Employee mockEmployee1= Mockito.mock(Employee.class);
     private Employee mockEmployee2= Mockito.mock(Employee.class);
-
     private Employee mockEmployee3= Mockito.mock(Employee.class);
 
     @Test

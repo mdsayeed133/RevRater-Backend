@@ -63,7 +63,7 @@ public class AuthControllerTest {
     }
 
     // Helper method to convert a Java object to JSON
-    public static String asJsonString(final Object obj) {
+    private String asJsonString(final Object obj) {
         try {
             final ObjectMapper mapper = new ObjectMapper();
             final String jsonContent = mapper.writeValueAsString(obj);
