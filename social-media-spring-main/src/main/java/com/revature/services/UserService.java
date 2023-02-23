@@ -36,8 +36,8 @@ public class UserService {
 
     public List<Employee> getAllFollowing(int userId){
         User user = userRepository.findById(userId).orElse(null);
-        if(user != null) return user.getFollowedEmployees();
-        return null;
+        if(user == null) return null;
+        return user.getFollowedEmployees();
     }
 
     public Optional<User> getUserById(int id){
