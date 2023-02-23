@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class EmployeeSearchTest {
+public class EmployeeSearchServiceTest {
     @Mock
     private EmployeeService employeeService;
     @Mock

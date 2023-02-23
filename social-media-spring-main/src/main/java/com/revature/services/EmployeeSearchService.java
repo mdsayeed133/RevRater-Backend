@@ -23,26 +23,40 @@ public class EmployeeSearchService {
 
     public List<Employee> combinedEmployeeSearch(SearchRequest searchRequest){
 
+        List<Employee> listByName;
+        List<Employee> listByTag;
+        List<Employee> listByDepartment;
+
         if(searchRequest.getTagId()==0 && searchRequest.getDepartmentId()==0&&(searchRequest.getName()==null||searchRequest.getName().equals("")))
             return new ArrayList<>();
 
-        List<Employee> listByName= employeeService.getEmployeeByName(searchRequest.getName());
-        List<Employee> listByTag= ratingService.searchEmployeesByTag(searchRequest.getTagId());
-        List<Employee> listByDepartment= employeeService.getEmployeeByDepartment(searchRequest.getDepartmentId());
+        if(searchRequest.getTagId()==0 && searchRequest.getDepartmentId()==0){
+            listByName= employeeService.getEmployeeByName(searchRequest.getName());
+            return listByName;}
+        if((searchRequest.getName()==null||searchRequest.getName().equals(""))&& searchRequest.getDepartmentId()==0){
+            listByTag= ratingService.searchEmployeesByTag(searchRequest.getTagId());
+            return listByTag;}
+        if(searchRequest.getTagId()==0 && (searchRequest.getName()==null||searchRequest.getName().equals(""))){
+            listByDepartment= employeeService.getEmployeeByDepartment(searchRequest.getDepartmentId());
+            return listByDepartment;}
 
-        if(searchRequest.getTagId()==0 && searchRequest.getDepartmentId()==0)
-            return listByName;
-        if((searchRequest.getName()==null||searchRequest.getName().equals(""))&& searchRequest.getDepartmentId()==0)
-            return listByTag;
-        if(searchRequest.getTagId()==0 && (searchRequest.getName()==null||searchRequest.getName().equals("")))
-            return listByDepartment;
+        if(searchRequest.getTagId()==0){
+            listByName= employeeService.getEmployeeByName(searchRequest.getName());
+            listByDepartment= employeeService.getEmployeeByDepartment(searchRequest.getDepartmentId());
+            return listByName.stream().filter(listByDepartment::contains).collect(Collectors.toList());}
+        if(searchRequest.getDepartmentId()==0){
+            listByName= employeeService.getEmployeeByName(searchRequest.getName());
+            listByTag= ratingService.searchEmployeesByTag(searchRequest.getTagId());
+            return listByName.stream().filter(listByTag::contains).collect(Collectors.toList());}
+        if(searchRequest.getName()==null||searchRequest.getName().equals("")){
+            listByTag= ratingService.searchEmployeesByTag(searchRequest.getTagId());
+            listByDepartment= employeeService.getEmployeeByDepartment(searchRequest.getDepartmentId());
+            return listByTag.stream().filter(listByDepartment::contains).collect(Collectors.toList());}
 
-        if(searchRequest.getTagId()==0)
-            return listByName.stream().filter(listByDepartment::contains).collect(Collectors.toList());
-        if(searchRequest.getDepartmentId()==0)
-            return listByName.stream().filter(listByTag::contains).collect(Collectors.toList());
-        if(searchRequest.getName()==null||searchRequest.getName().equals(""))
-            return listByTag.stream().filter(listByDepartment::contains).collect(Collectors.toList());
+        listByName= employeeService.getEmployeeByName(searchRequest.getName());
+        listByTag= ratingService.searchEmployeesByTag(searchRequest.getTagId());
+        listByDepartment= employeeService.getEmployeeByDepartment(searchRequest.getDepartmentId());
+
         return listByName.stream()
                 .filter(listByDepartment::contains).filter(listByTag::contains)
                 .collect(Collectors.toList());
