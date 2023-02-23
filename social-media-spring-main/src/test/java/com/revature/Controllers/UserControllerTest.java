@@ -1,17 +1,15 @@
 package com.revature.Controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.revature.controllers.AuthController;
-import com.revature.dtos.LoginRequest;
+import com.revature.controllers.UserController;
 import com.revature.models.User;
-import com.revature.services.AuthService;
+import com.revature.services.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -21,42 +19,32 @@ import java.util.Optional;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-public class AuthControllerTest {
+public class UserControllerTest {
+
     @Autowired
     private MockMvc mockMvc;
     @Mock
-    private AuthService authService;
+    private UserService userService;
 
     @BeforeEach
     public void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(new AuthController(authService))
+        mockMvc = MockMvcBuilders.standaloneSetup(new UserController(userService))
                 .build();
     }
-
     @Test
-    void LoginTest() throws Exception {
-        String email = "test@test.com";
-        String password = "testpassword";
-        User user = new User(1, email, password, "John", "Doe", Instant.now());
+    void testGetUserById() throws Exception {
+        User user = new User(1, "test@test.com", "password", "John", "Doe", Instant.now());
+        when(userService.getUserById(user.getId())).thenReturn(Optional.of(user));
 
-        // Create a LoginRequest object with the email and password
-        LoginRequest loginRequest = new LoginRequest(email, password);
-
-        // Set up the mock authentication service to return the user
-        when(authService.findByCredentials(email, password)).thenReturn(Optional.of(user));
-
-        // Send a POST request to the /login endpoint with a JSON body containing the LoginRequest object
-        mockMvc.perform(post("/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(loginRequest)))
+        mockMvc.perform(get("/users/" + user.getId() + "/id"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", notNullValue()))
-                .andExpect(jsonPath("$.email", equalTo(email)))
+                .andExpect(jsonPath("$.id", equalTo(user.getId())))
+                .andExpect(jsonPath("$.email", equalTo("test@test.com")))
                 .andExpect(jsonPath("$.firstName", equalTo("John")))
                 .andExpect(jsonPath("$.lastName", equalTo("Doe")))
                 .andExpect(jsonPath("$.date", notNullValue()));
