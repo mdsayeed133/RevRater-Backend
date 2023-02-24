@@ -1,5 +1,6 @@
 package com.revature.controllers;
 
+import com.revature.annotations.Authorized;
 import com.revature.dtos.LikesDTO;
 import com.revature.services.LikeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class LikeController {
     public LikeController(LikeService likeService) {
         this.likeService = likeService;
     }
-
+    @Authorized
     @PostMapping("/like")
     public ResponseEntity<String> likePost(@RequestBody LikesDTO lDTO){
         try {

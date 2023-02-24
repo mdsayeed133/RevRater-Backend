@@ -1,5 +1,6 @@
 package com.revature.controllers;
 
+import com.revature.annotations.Authorized;
 import com.revature.dtos.EmployeeResponse;
 import com.revature.dtos.FollowRequest;
 import com.revature.dtos.PasswordResetRequest;
@@ -36,7 +37,7 @@ public class UserController {
         }
         return ResponseEntity.notFound().build();
     }
-
+    @Authorized
     @GetMapping("/followed/{userId}/id")
     public ResponseEntity<List<EmployeeResponse>> getAllFollowing(@PathVariable int userId){
         List<Employee> followedEmployees = userService.getAllFollowing(userId);
@@ -50,7 +51,7 @@ public class UserController {
             return ResponseEntity.ok(responseDTOS);}
         return ResponseEntity.notFound().build();
     }
-
+    @Authorized
     @PutMapping("/updatePassword")
     public ResponseEntity<Object> updatePassword(@RequestBody PasswordResetRequest passwordResetRequest){
         boolean result = userService.updatePassword(passwordResetRequest.getUserId(), passwordResetRequest.getPassword());
@@ -70,7 +71,7 @@ public class UserController {
             return ResponseEntity.ok(UserDTOs);}
         return ResponseEntity.notFound().build();
     }
-
+    @Authorized
     @PutMapping("/follow")
     public ResponseEntity<String> follow(@RequestBody FollowRequest request){
         try {
@@ -80,7 +81,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
+    @Authorized
     @PutMapping("/unfollow")
     public ResponseEntity<String> unFollow(@RequestBody FollowRequest request){
         try {
@@ -90,7 +91,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
+    @Authorized
     @GetMapping("/isFollowing")
     public ResponseEntity<Boolean> isFollowing(@RequestBody FollowRequest request){
         try{

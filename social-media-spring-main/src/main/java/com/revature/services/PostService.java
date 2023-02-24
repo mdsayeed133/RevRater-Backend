@@ -110,7 +110,7 @@ public class PostService {
 		Employee emp = employeeService.getEmployeeById(employeeId);
 		List<Post> posts = new ArrayList<>();
 		List<Rating> ratings = ratingService.findByEmployee(emp).orElse(null);
-		if(ratings==null) return new ArrayList<>(List.of(new Post[]{new Post(0, emp.getFirstName() + " has no post about them", 0, null, fakeUser, PostType.Rating, fakeRating, Instant.now())}));
+		if(ratings==null||ratings.isEmpty()) return new ArrayList<>(List.of(new Post[]{new Post(0, emp.getFirstName() + " has no post about them", 0, null, fakeUser, PostType.Rating, fakeRating, Instant.now())}));
 		for (Rating rating : ratings) {
 			Post post = postRepository.findByRating(rating).orElse(null);
 			posts.add(post);
@@ -121,7 +121,7 @@ public class PostService {
 	//this is the method to getPostByUserFollower
 	public List<Post> getUserFeed(int userId) {
 		List<Employee> employees= userService.getAllFollowing(userId);
-		if(employees==null)return new ArrayList<>(List.of(new Post[]{new Post(0, "You have to follow a employee to have a feed", 0, null, fakeUser, PostType.Rating, fakeRating, Instant.now())}));
+		if(employees==null||employees.isEmpty())return new ArrayList<>(List.of(new Post[]{new Post(0, "You have to follow a employee to have a feed", 0, null, fakeUser, PostType.Rating, fakeRating, Instant.now())}));
 		List<Post> posts = new ArrayList<>();
 		for (Employee employee : employees) {
 			List<Rating> ratings = ratingService.findByEmployee(employee).orElse(null);
@@ -181,7 +181,7 @@ public class PostService {
 		}
 	}
 
-	public Boolean editRelyPost(CommentPostRequest commentPostRequest, int replyId) throws PostNotFound {
+	public Boolean editReplyPost(CommentPostRequest commentPostRequest, int replyId) throws PostNotFound {
 		try {
 			Post post = postRepository.findById(replyId).orElse(null);
 			if(post==null)throw new PostNotFound();
