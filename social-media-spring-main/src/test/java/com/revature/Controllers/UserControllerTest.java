@@ -1,6 +1,5 @@
 package com.revature.Controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.revature.controllers.UserController;
 import com.revature.models.User;
 import com.revature.services.UserService;
