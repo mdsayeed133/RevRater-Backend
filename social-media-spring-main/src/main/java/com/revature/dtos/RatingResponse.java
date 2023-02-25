@@ -1,9 +1,6 @@
 package com.revature.dtos;
 
-import com.revature.models.Employee;
 import com.revature.models.Tag;
-
-import javax.persistence.*;
 
 public class RatingResponse {
     private int id;

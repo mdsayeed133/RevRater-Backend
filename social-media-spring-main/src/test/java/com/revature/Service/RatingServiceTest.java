@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class RatingServiceTest {
+class RatingServiceTest {
 
     @Mock
     private EmployeeService employeeService;
@@ -90,7 +90,7 @@ public class RatingServiceTest {
     }
 
     @Test
-    public void createRatingTest()
+    void createRatingTest()
     {
         RatingDTO rDTO = new RatingDTO(1, 60, 1,2,3);
         when(employeeService.getEmployeeById(rDTO.getEmployeeId())).thenReturn(mockEmployee);
@@ -105,7 +105,7 @@ public class RatingServiceTest {
     }
 
     @Test
-    public void editRatingTest()
+    void editRatingTest()
     {
         RatingDTO rDTO = new RatingDTO(1,60,1,2,3);
         when(employeeService.getEmployeeById(rDTO.getEmployeeId())).thenReturn(mockEmployee);
@@ -122,13 +122,13 @@ public class RatingServiceTest {
         assertEquals(mockTag3, rating.getTag3());
     }
     @Test
-    public void testDelete() {
+    void testDelete() {
         service.delete(mockRating);
         verify(ratingRepo).delete(mockRating);
     }
 
     @Test
-    public void searchEmployeesByTagTest() {
+    void searchEmployeesByTagTest() {
         List<Rating> ratings = Arrays.asList(mockRating3, mockRating2,mockRating, mockRating3);
 
         when(tagService.findById(mockTag1.getId())).thenReturn(mockTag1);
@@ -142,7 +142,7 @@ public class RatingServiceTest {
     }
 
     @Test
-    public void testGetEmployeeAvgRating_ReturnAverage() {
+    void testGetEmployeeAvgRating_ReturnAverage() {
         when(employeeService.getEmployeeById(mockEmployee2.getId())).thenReturn(mockEmployee2);
 
         List<Rating> ratings = Arrays.asList(mockRating,mockRating4);
@@ -167,7 +167,7 @@ public class RatingServiceTest {
     }
 
     @Test
-    public void getTop3EmployeesTest() {
+    void getTop3EmployeesTest() {
         List<Rating> ratings = Arrays.asList(mockRating,mockRating2,mockRating3,mockRating4);
         when(ratingRepo.findAll()).thenReturn(ratings);
 
@@ -181,7 +181,7 @@ public class RatingServiceTest {
     }
 
     @Test
-    public void testFindByEmployee() {
+    void testFindByEmployee() {
 
         List<Rating> ratings = Arrays.asList(mockRating, mockRating2);
 

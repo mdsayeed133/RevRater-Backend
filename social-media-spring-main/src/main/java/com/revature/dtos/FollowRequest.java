@@ -22,6 +22,6 @@ public class FollowRequest {
     }
 
     public void setEmployeeId(int employeeId) {
-        employeeId = employeeId;
+        this.employeeId = employeeId;
     }
 }

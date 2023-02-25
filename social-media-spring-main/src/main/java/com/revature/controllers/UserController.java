@@ -63,12 +63,12 @@ public class UserController {
     public ResponseEntity<List<UserResponse>> searchUsers(@PathVariable String search){
         List<User> searchResults = userService.getUserByName(search);
         if(searchResults != null){
-            List<UserResponse> UserDTOs= new ArrayList<>();
+            List<UserResponse> userDTOs= new ArrayList<>();
             for (User user : searchResults) {
                 UserResponse dto= new UserResponse(user.getId(), user.getEmail(), user.getPassword(), user.getFirstName(), user.getLastName(),user.getCreatedDate());
-                UserDTOs.add(dto);
+                userDTOs.add(dto);
             }
-            return ResponseEntity.ok(UserDTOs);}
+            return ResponseEntity.ok(userDTOs);}
         return ResponseEntity.notFound().build();
     }
     @Authorized
