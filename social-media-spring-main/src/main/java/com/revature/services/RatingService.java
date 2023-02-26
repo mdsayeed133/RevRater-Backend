@@ -56,9 +56,7 @@ public class RatingService {
         return ratingRepository.save(rating);
 
     }
-    public void delete(Rating rating){
-        ratingRepository.delete(rating);
-    }
+
     public List<Employee> searchEmployeesByTag(int tagId) {
         Tag tag= tagService.findById(tagId);
         List<Rating> ratings = ratingRepository.findByTag1OrTag2OrTag3(tag, tag, tag).orElse(null);

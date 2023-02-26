@@ -121,11 +121,7 @@ class RatingServiceTest {
         assertEquals(mockTag2, rating.getTag2());
         assertEquals(mockTag3, rating.getTag3());
     }
-    @Test
-    void testDelete() {
-        service.delete(mockRating);
-        verify(ratingRepo).delete(mockRating);
-    }
+
 
     @Test
     void searchEmployeesByTagTest() {
