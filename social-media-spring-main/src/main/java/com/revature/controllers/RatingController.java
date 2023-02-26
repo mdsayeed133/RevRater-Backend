@@ -10,10 +10,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("/rating/post")
+@RequestMapping("/rating")
 @CrossOrigin
 public class RatingController {
 
@@ -53,8 +54,10 @@ public class RatingController {
     @GetMapping("/employee/{employeeId}/top3tags")
     public ResponseEntity<List<Tag>> getTop3TagsOfEmployee(@PathVariable int employeeId) {
         List<Tag> top3Tags = ratingService.getTop3TagsOfEmployee(employeeId);
-        if (top3Tags == null) {
-            return ResponseEntity.notFound().build();
+        if (top3Tags == null|| top3Tags.isEmpty()||top3Tags.size()<=2) {
+            Tag fakeTag= new Tag(1, "None");
+            List<Tag> fakeTags= Arrays.asList(fakeTag,fakeTag,fakeTag);
+            return ResponseEntity.ok(fakeTags);
         }
         return ResponseEntity.ok(top3Tags);
     }
