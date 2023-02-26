@@ -4,6 +4,7 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -121,6 +122,7 @@ public class User {
     }
 
     public List<Employee> getFollowedEmployees() {
+        if(this.followedEmployees==null) return new ArrayList<>();
         return followedEmployees;
     }
 
