@@ -71,7 +71,7 @@ public class UserController {
             return ResponseEntity.ok(userDTOs);}
         return ResponseEntity.notFound().build();
     }
-    @Authorized
+
     @PutMapping("/follow")
     public ResponseEntity<String> follow(@RequestBody FollowRequest request){
         try {
@@ -81,7 +81,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @Authorized
+
     @PutMapping("/unfollow")
     public ResponseEntity<String> unFollow(@RequestBody FollowRequest request){
         try {
@@ -91,12 +91,13 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @Authorized
-    @GetMapping("/isFollowing")
+
+    @PutMapping("/isFollowing")
     public ResponseEntity<Boolean> isFollowing(@RequestBody FollowRequest request){
         try{
             boolean result= userService.isFollowing(request.getUserId(), request.getEmployeeId());
-            return ResponseEntity.ok().body(result);
+            if(!result) return ResponseEntity.accepted().body(false);
+            return ResponseEntity.ok().body(true);
         } catch (Exception e){
             return ResponseEntity.badRequest().body(false);
         }
