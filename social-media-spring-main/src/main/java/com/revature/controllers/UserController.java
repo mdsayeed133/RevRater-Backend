@@ -71,7 +71,7 @@ public class UserController {
             return ResponseEntity.ok(userDTOs);}
         return ResponseEntity.notFound().build();
     }
-
+    @Authorized
     @PutMapping("/follow")
     public ResponseEntity<String> follow(@RequestBody FollowRequest request){
         try {
@@ -81,7 +81,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
+    @Authorized
     @PutMapping("/unfollow")
     public ResponseEntity<String> unFollow(@RequestBody FollowRequest request){
         try {
