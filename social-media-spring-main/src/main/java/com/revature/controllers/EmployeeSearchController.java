@@ -23,7 +23,7 @@ public class EmployeeSearchController {
         this.employeeSearchService = employeeSearchService;
     }
 
-    @GetMapping
+    @PutMapping
     public ResponseEntity<List<EmployeeResponse>> combinedEmployeeSearch(@RequestBody SearchRequest searchRequest){
         List<Employee> employees = employeeSearchService.combinedEmployeeSearch(searchRequest);
         if(employees.isEmpty()){return ResponseEntity.noContent().build();}
