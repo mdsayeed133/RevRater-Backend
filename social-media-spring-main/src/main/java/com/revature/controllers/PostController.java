@@ -189,8 +189,6 @@ public class PostController {
             return ResponseEntity.notFound().build();
         } catch (PostNotFound pe) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        } catch (Exception e){
-            return ResponseEntity.badRequest().build();
         }
     }
     @Authorized
@@ -202,7 +200,7 @@ public class PostController {
             boolean result = postService.editCommentPost(commentPostRequest, id);
             if(result) return ResponseEntity.ok().build();
             return ResponseEntity.badRequest().build();
-        }catch (Exception e){
+        }catch (PostNotFound e){
             return ResponseEntity.notFound().build();
         }
     }
@@ -215,7 +213,7 @@ public class PostController {
             boolean result = postService.editReplyPost(commentPostRequest, id);
             if(result) return ResponseEntity.ok().build();
             return ResponseEntity.badRequest().build();
-        }catch (Exception e){
+        }catch (PostNotFound e){
             return ResponseEntity.notFound().build();
         }
     }

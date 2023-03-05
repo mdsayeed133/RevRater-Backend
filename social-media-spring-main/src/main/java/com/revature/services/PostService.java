@@ -2,6 +2,7 @@ package com.revature.services;
 
 import com.revature.dtos.CommentPostRequest;
 import com.revature.dtos.RatingPostRequest;
+import com.revature.exceptions.NotLoggedInException;
 import com.revature.exceptions.PostNotFound;
 import com.revature.exceptions.UserNotFound;
 import com.revature.models.*;
@@ -151,10 +152,11 @@ public class PostService {
 		return replies;
 	}
 
-	public Boolean editRatingPost(RatingPostRequest ratingsPostRequest, int postId) throws PostNotFound{
+	public Boolean editRatingPost(RatingPostRequest ratingsPostRequest, int postId) throws PostNotFound,NotLoggedInException{
 		try {
 			Post post = postRepository.findById(postId).orElse(null);
 			if(post==null)throw new PostNotFound();
+			if(post.getAuthor().getId()!= ratingsPostRequest.getUserId()) throw new NotLoggedInException();
 			Rating rating = post.getRating();
 			String clearText= profanityService.filterProfanity(ratingsPostRequest.getText());
 			post.setMessage(clearText);
@@ -167,10 +169,11 @@ public class PostService {
 		}
 	}
 
-	public Boolean editCommentPost(CommentPostRequest commentPostRequest, int commentId) throws PostNotFound {
+	public Boolean editCommentPost(CommentPostRequest commentPostRequest, int commentId) throws PostNotFound,NotLoggedInException {
 		try {
 			Post post = postRepository.findById(commentId).orElse(null);
 			if(post==null)throw new PostNotFound();
+			if(post.getAuthor().getId()!= commentPostRequest.getUserId()) throw new NotLoggedInException();
 			String clearText= profanityService.filterProfanity(commentPostRequest.getText());
 			post.setMessage(clearText);
 			post.setImageId(commentPostRequest.getImageId());
@@ -185,6 +188,7 @@ public class PostService {
 		try {
 			Post post = postRepository.findById(replyId).orElse(null);
 			if(post==null)throw new PostNotFound();
+			if(post.getAuthor().getId()!= commentPostRequest.getUserId()) throw new NotLoggedInException();
 			String clearText= profanityService.filterProfanity(commentPostRequest.getText());
 			post.setMessage(clearText);
 			post.setImageId(commentPostRequest.getImageId());
