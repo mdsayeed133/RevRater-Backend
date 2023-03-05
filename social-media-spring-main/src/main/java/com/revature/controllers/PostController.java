@@ -2,6 +2,7 @@ package com.revature.controllers;
 
 import com.revature.annotations.Authorized;
 import com.revature.dtos.*;
+import com.revature.exceptions.NotLoggedInException;
 import com.revature.exceptions.PostNotFound;
 import com.revature.models.*;
 import com.revature.services.PostService;
@@ -10,8 +11,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/posts")
@@ -177,8 +180,10 @@ public class PostController {
     }
     @Authorized
     @PutMapping("/{id}/post/edit")
-    public ResponseEntity<Object> editRatingPost(@RequestBody RatingPostRequest ratingPostRequest, @PathVariable int id){
-        try {//TODO: Incorporate session at the controller level to prevent users from modifying other people's posts.
+    public ResponseEntity<Object> editRatingPost(@RequestBody RatingPostRequest ratingPostRequest, @PathVariable int id, HttpSession session){
+        try {
+            Optional<User> user = (Optional<User>) session.getAttribute("user");
+            if(user.get().getId()!=ratingPostRequest.getUserId()) throw new NotLoggedInException();
             boolean result = postService.editRatingPost(ratingPostRequest, id);
             if(result) return ResponseEntity.ok().build();
             return ResponseEntity.notFound().build();
@@ -190,8 +195,10 @@ public class PostController {
     }
     @Authorized
     @PutMapping("/{id}/comment/edit")
-    public ResponseEntity<Object> editCommentPost(@RequestBody CommentPostRequest commentPostRequest, @PathVariable int id){
-        try {//TODO: Incorporate session at the controller level to prevent users from modifying other people's posts.
+    public ResponseEntity<Object> editCommentPost(@RequestBody CommentPostRequest commentPostRequest, @PathVariable int id, HttpSession session){
+        try {
+            Optional<User> user = (Optional<User>) session.getAttribute("user");
+            if(user.get().getId()!=commentPostRequest.getUserId()) throw new NotLoggedInException();
             boolean result = postService.editCommentPost(commentPostRequest, id);
             if(result) return ResponseEntity.ok().build();
             return ResponseEntity.badRequest().build();
@@ -201,8 +208,10 @@ public class PostController {
     }
     @Authorized
     @PutMapping("/{id}/reply/edit")
-    public ResponseEntity<Object> editReplyPost(@RequestBody CommentPostRequest commentPostRequest, @PathVariable int id){
-        try {//TODO: Incorporate session at the controller level to prevent users from modifying other people's posts.
+    public ResponseEntity<Object> editReplyPost(@RequestBody CommentPostRequest commentPostRequest, @PathVariable int id, HttpSession session){
+        try {
+            Optional<User> user = (Optional<User>) session.getAttribute("user");
+            if(user.get().getId()!=commentPostRequest.getUserId()) throw new NotLoggedInException();
             boolean result = postService.editReplyPost(commentPostRequest, id);
             if(result) return ResponseEntity.ok().build();
             return ResponseEntity.badRequest().build();

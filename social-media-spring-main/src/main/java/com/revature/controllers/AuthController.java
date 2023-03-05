@@ -40,13 +40,12 @@ public class AuthController {
     //Logout works
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpSession session) {
-        if(session.getAttribute("user") == (null))
-        {
+        if(session.getAttribute("user") == (null)) {
             return ResponseEntity.ok().body("You wasn't logged in foo!");
         }
+        Optional<User> user = (Optional<User>) session.getAttribute("user");
         session.removeAttribute("user");
-
-        return ResponseEntity.ok().body("You've been successfully signed out");
+        return ResponseEntity.ok().body(user.get().getFirstName()+" "+user.get().getLastName()+ " has successfully signed out");
     }
 
 
