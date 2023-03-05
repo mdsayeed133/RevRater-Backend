@@ -5,6 +5,7 @@ import com.revature.dtos.UserResponse;
 import com.revature.models.Employee;
 import com.revature.models.Tag;
 import com.revature.services.RatingService;
+import org.decimal4j.util.DoubleRounder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,7 @@ public class RatingController {
     public ResponseEntity<Double> getEmployeeAvgRating(@PathVariable int employeeId) {
         try {
             Double avgRating = ratingService.getEmployeeAvgRating(employeeId);
-            return ResponseEntity.ok(avgRating);
+            return ResponseEntity.ok(DoubleRounder.round(avgRating,2));
         }catch (Exception e){
             return ResponseEntity.badRequest().build();
         }
