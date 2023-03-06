@@ -39,7 +39,7 @@ public class UserController {
         }
         return ResponseEntity.notFound().build();
     }
-    @Authorized
+
     @GetMapping("/followed/{userId}/id")
     public ResponseEntity<List<EmployeeResponse>> getAllFollowing(@PathVariable int userId){
         List<Employee> followedEmployees = userService.getAllFollowing(userId);
