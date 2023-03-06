@@ -5,6 +5,7 @@ import com.revature.dtos.EmployeeResponse;
 import com.revature.dtos.FollowRequest;
 import com.revature.dtos.PasswordResetRequest;
 import com.revature.dtos.UserResponse;
+import com.revature.exceptions.NotLoggedInException;
 import com.revature.models.Employee;
 import com.revature.models.User;
 import com.revature.services.UserService;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +55,9 @@ public class UserController {
     }
     @Authorized
     @PutMapping("/updatePassword")
-    public ResponseEntity<Object> updatePassword(@RequestBody PasswordResetRequest passwordResetRequest){
+    public ResponseEntity<Object> updatePassword(@RequestBody PasswordResetRequest passwordResetRequest, HttpSession session){
+        Optional<User> user = (Optional<User>) session.getAttribute("user");
+        if(user.get().getId()!=passwordResetRequest.getUserId()) throw new NotLoggedInException();
         boolean result = userService.updatePassword(passwordResetRequest.getUserId(), passwordResetRequest.getPassword());
         if(result) return ResponseEntity.ok().build();
         return ResponseEntity.badRequest().build();
