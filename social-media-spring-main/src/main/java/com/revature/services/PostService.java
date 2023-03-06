@@ -86,7 +86,7 @@ public class PostService {
 		User user = userService.getUserById(id).orElse(null);
 		if(user==null) throw new UserNotFound();
 		List<Post> posts = postRepository.findByAuthorAndPostType(user,PostType.Rating).orElse(null);
-		if(posts==null || posts.isEmpty())return new ArrayList<>(List.of(new Post[]{new Post(0, user.getFirstName() + " has not made any post", 0, null, fakeUser, PostType.Rating, fakeRating, Instant.now())}));
+		if(posts==null)return new ArrayList<>(List.of(new Post[]{new Post(0, user.getFirstName() + " has not made any post", 0, null, fakeUser, PostType.Rating, fakeRating, Instant.now())}));
 		posts.sort(Comparator.comparing(Post::getCreatedDate).reversed());
 		return posts;
 	}
@@ -94,7 +94,7 @@ public class PostService {
 		User user = userService.getUserById(id).orElse(null);
 		if(user==null) throw new UserNotFound();
 		List<Post> posts = postRepository.findByAuthorAndPostType(user,PostType.Comment).orElse(null);
-		if(posts==null || posts.isEmpty())return new ArrayList<>(List.of(new Post[]{new Post(0, user.getFirstName() + " has not made any comments", 0, null, fakeUser, PostType.Comment, null, Instant.now())}));
+		if(posts==null)return new ArrayList<>(List.of(new Post[]{new Post(0, user.getFirstName() + " has not made any comments", 0, null, fakeUser, PostType.Comment, null, Instant.now())}));
 		posts.sort(Comparator.comparing(Post::getCreatedDate).reversed());
 		return posts;
 	}
@@ -102,7 +102,7 @@ public class PostService {
 		User user = userService.getUserById(id).orElse(null);
 		if(user==null) throw new UserNotFound();
 		List<Post> posts = postRepository.findByAuthorAndPostType(user,PostType.Reply).orElse(null);
-		if(posts==null|| posts.isEmpty())return new ArrayList<>(List.of(new Post[]{new Post(0, user.getFirstName() + " has not made any reply", 0, null, fakeUser, PostType.Reply, null, Instant.now())}));
+		if(posts==null)return new ArrayList<>(List.of(new Post[]{new Post(0, user.getFirstName() + " has not made any reply", 0, null, fakeUser, PostType.Reply, null, Instant.now())}));
 		posts.sort(Comparator.comparing(Post::getCreatedDate).reversed());
 		return posts;
 	}
@@ -111,7 +111,7 @@ public class PostService {
 		Employee emp = employeeService.getEmployeeById(employeeId);
 		List<Post> posts = new ArrayList<>();
 		List<Rating> ratings = ratingService.findByEmployee(emp).orElse(null);
-		if(ratings==null||ratings.isEmpty()) return new ArrayList<>(List.of(new Post[]{new Post(0, emp.getFirstName() + " has no post about them", 0, null, fakeUser, PostType.Rating, fakeRating, Instant.now())}));
+		if(ratings==null) return new ArrayList<>(List.of(new Post[]{new Post(0, emp.getFirstName() + " has no post about them", 0, null, fakeUser, PostType.Rating, fakeRating, Instant.now())}));
 		for (Rating rating : ratings) {
 			Post post = postRepository.findByRating(rating).orElse(null);
 			if(post != null) posts.add(post);
