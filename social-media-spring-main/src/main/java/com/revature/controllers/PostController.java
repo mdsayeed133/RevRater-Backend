@@ -142,7 +142,8 @@ public class PostController {
                 responses.add(response);
             }
             return ResponseEntity.ok(responses);
-        }catch (Exception e){
+        } catch (Exception e){
+            System.out.println(e.getStackTrace());
             return ResponseEntity.badRequest().build();
         }
     }

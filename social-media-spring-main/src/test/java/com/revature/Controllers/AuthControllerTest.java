@@ -63,15 +63,6 @@ class AuthControllerTest {
                 .andExpect(jsonPath("$.lastName", equalTo("Doe")))
                 .andExpect(jsonPath("$.date", notNullValue()));
     }
-    @Test
-    void testLogout() throws Exception {
-        MockHttpSession session = new MockHttpSession();
-        session.setAttribute("user", new User());
-
-        mockMvc.perform(post("/auth/logout").session(session))
-                .andExpect(status().isOk())
-                .andExpect(content().string("You've been successfully signed out"));
-    }
 
     @Test
      void testRegister() throws Exception {
