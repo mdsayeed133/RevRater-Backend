@@ -34,7 +34,7 @@ public class AuthController {
         UserResponse uDTO = new UserResponse(user.get().getId(), user.get().getEmail(), user.get().getPassword(), user.get().getFirstName(), user.get().getLastName(), user.get().getCreatedDate());
         session.setAttribute("user", user);
         Optional<User> login = (Optional<User>) session.getAttribute("user");
-        System.out.println(login.get().getEmail()+" login");
+        if(session.getAttribute("user") != null)System.out.println(login.get().getEmail()+" login");
         return ResponseEntity.ok(uDTO);
     }
 
