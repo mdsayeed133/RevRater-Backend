@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 public class RatingService {
 
     private final RatingRepository ratingRepository;
-    private EmployeeService employeeService;
-    private TagService tagService;
+    private final EmployeeService employeeService;
+    private final TagService tagService;
 
 
     @Autowired

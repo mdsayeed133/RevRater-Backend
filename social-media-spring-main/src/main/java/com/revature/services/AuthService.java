@@ -13,7 +13,7 @@ import java.util.Optional;
 public class AuthService {
 
     private final UserService userService;
-    private ProfanityService profanityService;
+    private final ProfanityService profanityService;
     @Autowired
     public AuthService(UserService userService, ProfanityService profanityService) {
         this.userService = userService;

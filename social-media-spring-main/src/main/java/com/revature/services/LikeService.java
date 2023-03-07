@@ -15,9 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class LikeService {
 
-    private LikeRepository likesRepo;
-    private PostService postService;
-    private UserService userService;
+    private final LikeRepository likesRepo;
+    private final PostService postService;
+    private final UserService userService;
 
 
     @Autowired

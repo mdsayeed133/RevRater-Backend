@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/employee")
 @CrossOrigin
 public class EmployeeController {
-    private EmployeeService employeeService;
+    private final EmployeeService employeeService;
 
     @Autowired
     public EmployeeController(EmployeeService employeeService) {

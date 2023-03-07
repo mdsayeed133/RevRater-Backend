@@ -17,7 +17,7 @@ import java.util.List;
 @CrossOrigin
 public class EmployeeSearchController {
 
-    private EmployeeSearchService employeeSearchService;
+    private final EmployeeSearchService employeeSearchService;
     @Autowired
     public EmployeeSearchController(EmployeeSearchService employeeSearchService) {
         this.employeeSearchService = employeeSearchService;

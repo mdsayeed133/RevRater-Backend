@@ -20,11 +20,11 @@ import java.util.Set;
 @Transactional
 public class EmployeeService {
 
-    private EmployeeRepository employeeRepository;
-    private UserService userService;
+    private final EmployeeRepository employeeRepository;
+    private final UserService userService;
 
-    private DepartmentService departmentService;
-    private ProfanityService profService;
+    private final DepartmentService departmentService;
+    private final ProfanityService profService;
     @Autowired
     public EmployeeService(EmployeeRepository employeeRepository, UserService userService, DepartmentService departmentService, ProfanityService profService) {
         this.employeeRepository = employeeRepository;

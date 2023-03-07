@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 @Transactional
 public class EmployeeSearchService {
 
-    private EmployeeService employeeService;
-    private RatingService ratingService;
+    private final EmployeeService employeeService;
+    private final RatingService ratingService;
     @Autowired
     public EmployeeSearchService(EmployeeService employeeService, RatingService ratingService) {
         this.employeeService = employeeService;

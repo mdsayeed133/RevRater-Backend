@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class LikeController {
 
-    private LikeService likeService;
+    private final LikeService likeService;
 
     @Autowired
     public LikeController(LikeService likeService) {

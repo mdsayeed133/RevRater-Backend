@@ -21,16 +21,16 @@ import java.util.Optional;
 @Transactional
 public class PostService {
 
-	private PostRepository postRepository;
-	private UserService userService;
-	private RatingService ratingService;
-	private EmployeeService employeeService;
-	private ProfanityService profanityService;
-	private Department fakeDepartment= new Department("N/A");
-	private Tag fakeTag= new Tag("N/A");
-	private User fakeUser= new User("fake@email.com","fake","N/A","N/A");
-	private Employee fakeEmployee= new Employee("N/A", "N/A", fakeUser,fakeDepartment,Instant.now());
-	private Rating fakeRating= new Rating(fakeEmployee,0,fakeTag,fakeTag,fakeTag);
+	private final PostRepository postRepository;
+	private final UserService userService;
+	private final RatingService ratingService;
+	private final EmployeeService employeeService;
+	private final ProfanityService profanityService;
+	private final Department fakeDepartment= new Department("N/A");
+	private final Tag fakeTag= new Tag("N/A");
+	private final User fakeUser= new User("fake@email.com","fake","N/A","N/A");
+	private final Employee fakeEmployee= new Employee("N/A", "N/A", fakeUser,fakeDepartment,Instant.now());
+	private final Rating fakeRating= new Rating(fakeEmployee,0,fakeTag,fakeTag,fakeTag);
 	@Autowired
 	public PostService(PostRepository postRepository, UserService userService, RatingService ratingService, EmployeeService employeeService, ProfanityService profanityService) {
 		this.postRepository = postRepository;

@@ -19,7 +19,7 @@ import java.util.Optional;
 @CrossOrigin
 public class AuthController {
 
-    private AuthService authService;
+    private final AuthService authService;
 
     @Autowired
     public AuthController(AuthService authService) {
