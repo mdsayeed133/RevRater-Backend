@@ -33,8 +33,7 @@ public class AuthController {
         if(!user.isPresent()) return ResponseEntity.badRequest().build();
         UserResponse uDTO = new UserResponse(user.get().getId(), user.get().getEmail(), user.get().getPassword(), user.get().getFirstName(), user.get().getLastName(), user.get().getCreatedDate());
         session.setAttribute("user", user);
-        Optional<User> login = (Optional<User>) session.getAttribute("user");
-        if(session.getAttribute("user") != null)System.out.println(login.get().getEmail()+" login");
+
         return ResponseEntity.ok(uDTO);
     }
 
@@ -42,13 +41,10 @@ public class AuthController {
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpSession session) {
         if(session.getAttribute("user") == null) {
-            System.out.println("You wasn't logged in foo!");
             return ResponseEntity.ok().body("You wasn't logged in foo!");
         }
-        Optional<User> user = (Optional<User>) session.getAttribute("user");
         session.removeAttribute("user");
-        System.out.println(user.get().getEmail()+" logout");
-        return ResponseEntity.ok().body(user.get().getFirstName()+" "+user.get().getLastName()+ " has successfully signed out");
+        return ResponseEntity.ok().body("You has successfully signed out");
     }
 
 
