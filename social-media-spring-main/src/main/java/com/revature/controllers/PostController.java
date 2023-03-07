@@ -28,7 +28,7 @@ public class PostController {
     public PostController(PostService postService) {
         this.postService = postService;
     }
-    @Authorized
+
     @PostMapping("/rating")
     public ResponseEntity<PostResponse> createRatingPost(@RequestBody RatingPostRequest ratingPostRequest) {
         try {
@@ -39,7 +39,7 @@ public class PostController {
             return ResponseEntity.badRequest().build();
         }
     }
-    @Authorized
+
     @PostMapping("/comment")
     public ResponseEntity<PostResponse> createCommentPost(@RequestBody CommentPostRequest commentPostRequest) {
         try {
@@ -50,7 +50,7 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-    @Authorized
+
     @PostMapping("/reply")
     public ResponseEntity<PostResponse> createReplyPost(@RequestBody CommentPostRequest replyPostRequest) {
         try {
@@ -179,12 +179,10 @@ public class PostController {
             return ResponseEntity.badRequest().build();
         }
     }
-    @Authorized
+
     @PutMapping("/{id}/post/edit")
     public ResponseEntity<Object> editRatingPost(@RequestBody RatingPostRequest ratingPostRequest, @PathVariable int id, HttpSession session){
         try {
-            Optional<User> user = (Optional<User>) session.getAttribute("user");
-            if(user.get().getId()!=ratingPostRequest.getUserId()) throw new NotLoggedInException();
             boolean result = postService.editRatingPost(ratingPostRequest, id);
             if(result) return ResponseEntity.ok().build();
             return ResponseEntity.notFound().build();
@@ -192,12 +190,10 @@ public class PostController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-    @Authorized
+
     @PutMapping("/{id}/comment/edit")
     public ResponseEntity<Object> editCommentPost(@RequestBody CommentPostRequest commentPostRequest, @PathVariable int id, HttpSession session){
         try {
-            Optional<User> user = (Optional<User>) session.getAttribute("user");
-            if(user.get().getId()!=commentPostRequest.getUserId()) throw new NotLoggedInException();
             boolean result = postService.editCommentPost(commentPostRequest, id);
             if(result) return ResponseEntity.ok().build();
             return ResponseEntity.badRequest().build();
@@ -205,12 +201,10 @@ public class PostController {
             return ResponseEntity.notFound().build();
         }
     }
-    @Authorized
+
     @PutMapping("/{id}/reply/edit")
     public ResponseEntity<Object> editReplyPost(@RequestBody CommentPostRequest commentPostRequest, @PathVariable int id, HttpSession session){
         try {
-            Optional<User> user = (Optional<User>) session.getAttribute("user");
-            if(user.get().getId()!=commentPostRequest.getUserId()) throw new NotLoggedInException();
             boolean result = postService.editReplyPost(commentPostRequest, id);
             if(result) return ResponseEntity.ok().build();
             return ResponseEntity.badRequest().build();

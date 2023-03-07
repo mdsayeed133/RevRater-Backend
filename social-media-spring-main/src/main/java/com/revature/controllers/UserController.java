@@ -53,7 +53,7 @@ public class UserController {
             return ResponseEntity.ok(responseDTOS);}
         return ResponseEntity.notFound().build();
     }
-    @Authorized
+
     @PutMapping("/updatePassword")
     public ResponseEntity<Object> updatePassword(@RequestBody PasswordResetRequest passwordResetRequest, HttpSession session){
         Optional<User> user = (Optional<User>) session.getAttribute("user");
@@ -75,7 +75,7 @@ public class UserController {
             return ResponseEntity.ok(userDTOs);}
         return ResponseEntity.notFound().build();
     }
-    @Authorized
+
     @PutMapping("/follow")
     public ResponseEntity<String> follow(@RequestBody FollowRequest request){
         try {
@@ -85,7 +85,7 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @Authorized
+
     @PutMapping("/unfollow")
     public ResponseEntity<String> unFollow(@RequestBody FollowRequest request){
         try {

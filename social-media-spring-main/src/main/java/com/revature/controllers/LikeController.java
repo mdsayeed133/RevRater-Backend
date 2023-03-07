@@ -18,7 +18,7 @@ public class LikeController {
     public LikeController(LikeService likeService) {
         this.likeService = likeService;
     }
-    @Authorized
+
     @PostMapping("/like")
     public ResponseEntity<String> likePost(@RequestBody LikesDTO lDTO){
         try {
